@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{88BBA128-59B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{FFA4F604-1DB3-47AC-A707-DABFC1CB25D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusManager.API", "src\core\BusManager.API\BusManager.API.csproj", "{8BF7C46E-CD3E-442A-95FA-868C76E8B5D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusManager.API", "src\core\BusManager.API\BusManager.API.csproj", "{8BF7C46E-CD3E-442A-95FA-868C76E8B5D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusManager.Application", "src\core\BusManager.Application\BusManager.Application.csproj", "{A9DC59E0-5671-4938-9DF9-D388CF80CF60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusManager.Application", "src\core\BusManager.Application\BusManager.Application.csproj", "{A9DC59E0-5671-4938-9DF9-D388CF80CF60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusManager.Domain", "src\core\BusManager.Domain\BusManager.Domain.csproj", "{8D8B2CD7-9ECF-474E-B21F-0DCBB3349BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusManager.Domain", "src\core\BusManager.Domain\BusManager.Domain.csproj", "{8D8B2CD7-9ECF-474E-B21F-0DCBB3349BA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{EC689DE1-91ED-4EE1-9E42-7F9D5B5A4CD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusManager.DataAccess.MSSQL", "src\infrastructure\BusManager.DataAccess.MSSQL\BusManager.DataAccess.MSSQL.csproj", "{57FFEE86-2770-47C6-A110-A0DC5AAB7FFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusManager.DataAccess.MSSQL", "src\infrastructure\BusManager.DataAccess.MSSQL\BusManager.DataAccess.MSSQL.csproj", "{57FFEE86-2770-47C6-A110-A0DC5AAB7FFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusManager.DataAccess.PostgreSql", "src\infrastructure\BusManager.DataAccess.PostgreSql\BusManager.DataAccess.PostgreSql.csproj", "{543B75BF-253D-456F-944A-A06320D1DD69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusManager.DataAccess.PostgreSql", "src\infrastructure\BusManager.DataAccess.PostgreSql\BusManager.DataAccess.PostgreSql.csproj", "{543B75BF-253D-456F-944A-A06320D1DD69}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{903C15E1-2C0E-4A45-AD1A-49B215EE9DC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusManager.Presentation", "src\presentation\BusManager.Presentation\BusManager.Presentation.csproj", "{E747834B-A0D4-4B8A-B032-312DB2739A66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusManager.Presentation", "src\presentation\BusManager.Presentation\BusManager.Presentation.csproj", "{E747834B-A0D4-4B8A-B032-312DB2739A66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +109,9 @@ Global
 		{E747834B-A0D4-4B8A-B032-312DB2739A66}.Release|x86.ActiveCfg = Release|Any CPU
 		{E747834B-A0D4-4B8A-B032-312DB2739A66}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FFA4F604-1DB3-47AC-A707-DABFC1CB25D1} = {88BBA128-59B5-467C-9CDB-5E3E3DA83239}
 		{8BF7C46E-CD3E-442A-95FA-868C76E8B5D3} = {FFA4F604-1DB3-47AC-A707-DABFC1CB25D1}
@@ -119,5 +122,8 @@ Global
 		{543B75BF-253D-456F-944A-A06320D1DD69} = {EC689DE1-91ED-4EE1-9E42-7F9D5B5A4CD2}
 		{903C15E1-2C0E-4A45-AD1A-49B215EE9DC1} = {88BBA128-59B5-467C-9CDB-5E3E3DA83239}
 		{E747834B-A0D4-4B8A-B032-312DB2739A66} = {903C15E1-2C0E-4A45-AD1A-49B215EE9DC1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {941E7754-D09E-4783-BD71-4E7E96413804}
 	EndGlobalSection
 EndGlobal

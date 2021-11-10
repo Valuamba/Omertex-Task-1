@@ -1,4 +1,4 @@
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -11,7 +11,13 @@
         </div>
 
         <div class="content px-4">
+            <CascadingValue Name="HeadingColor" Value="@_color">
             @Body
+            </CascadingValue>
         </div>
     </div>
 </div>
+
+@code {
+    private readonly string _color = "#0505b5";
+}
