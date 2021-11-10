@@ -12,7 +12,11 @@ namespace BusManager.DataAccess.MSSQL
     {
         public DataAccessMappingProfile()
         {
-            CreateMap<UserEntity, Domain.Models.User>().ReverseMap();
+            CreateMap<Entities.BusStop, Domain.Models.BusStop>().ReverseMap();
+            CreateMap<Entities.UserEntity, Domain.Models.User>().ReverseMap();
+            CreateMap<Entities.Order, Domain.Models.Order>().ReverseMap();
+            CreateMap<Entities.Ticket, Domain.Models.Ticket>().ReverseMap();
+            CreateMap<Entities.VoyageInfo, Domain.Models.VoyageInfo>().ReverseMap();
         }
     }
 }

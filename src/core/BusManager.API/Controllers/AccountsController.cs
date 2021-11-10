@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BusManager.Application.Contracts.Account;
 using BusManager.Application.Services;
+using BusManager.Application.Services.Interfaces;
 using BusManager.Domain.Models;
 using BusManager.Domain.Repositories;
 using BusManager.Domain.Services;
