@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\infrastructure\BusManager.DataAccess.PostgreSql\BusManager.DataAccess.PostgreSql.csproj" />
     <ProjectReference Include="..\BusManager.Application\BusManager.Application.csproj" />
     <ProjectReference Include="..\BusManager.Domain\BusManager.Domain.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
