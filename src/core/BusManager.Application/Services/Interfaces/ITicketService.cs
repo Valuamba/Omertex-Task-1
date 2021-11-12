@@ -9,6 +9,6 @@ namespace BusManager.Application.Services.Interfaces
 
         Task<TicketRepsonse> GetTicket(int ticketId);
 
-        Task<BuyTicketRepsonse> BuyBackReservedTicket(int ticketId);
+        Task<BuyTicketResponse> BuyBackReservedTicket(int ticketId);
     }
 }

@@ -6,6 +6,7 @@ namespace BusManager.Application.Contracts.Voyage
     public class VoyageInfoRequest
     {
         public int VoyageId { get; set; }
+
         public string DepartureBusStopName { get; set; }
 
         public string ArrivalBusStopName { get; set; }

@@ -6,11 +6,15 @@ using System;
 using BusManager.Application.Services;
 using BusManager.Application.Contracts.Voyage;
 using BusManager.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using BusManager.Application.Paging;
 
 namespace BusManager.API.Controllers
 {
     [ApiController]
     [Route("api/voyage")]
+    [Authorize]
     public class VoyageController : ControllerBase
     {
         private readonly IVoyageService _voyageService;
@@ -23,13 +27,13 @@ namespace BusManager.API.Controllers
         }
 
         [HttpGet("all")]
-        [ProducesResponseType(typeof(VoyageInfoRequest[]), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetVoyages()
+        [ProducesResponseType(typeof(PagedList<VoyageInfoRequest>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetVoyages([FromQuery] VoyageParameters voyageParameters)
         {
             try
             {
-                var voyages = await _voyageService.GetVoyages();
-
+                var voyages = await _voyageService.GetVoyages(voyageParameters);
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(voyages.MetaData));
                 return Ok(voyages);
             }
             catch (Exception ex)
@@ -46,24 +50,6 @@ namespace BusManager.API.Controllers
             try
             {
                 var voyage = await _voyageService.GetVoyage(voyageId);
-
-                return Ok(voyage);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("search/{from?}")]
-        [ProducesResponseType(typeof(VoyageInfoRequest[]), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> SearchVoyages(string from = null, [FromQuery] string to = null, [FromQuery] DateTime? departureDateTime = null, [FromQuery] string voyageName = null)
-        {
-            try
-            {
-                var voyage = await _voyageService.SearchVoyages(from, to, departureDateTime, voyageName);
-
                 return Ok(voyage);
             }
             catch (Exception ex)

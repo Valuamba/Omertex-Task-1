@@ -1,0 +1,188 @@
+﻿@page "/order/{voyageId:int}"
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+@inject IVoyageService _voyageService
+@inject IOrderService _orderService
+@inject IJSConsole _jsConsole
+
+@if (Voyage is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <div class="container border border-primary mb-2" style="width: 800px;">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="d-flex justify-content-center">
+                    <p class="font-weight-bold">Voyage number</p>
+                </div>
+            </div>
+            <div class="col-sm-3 ">
+                <p class="font-weight-bold">Departure point</p>
+            </div>
+            <div class="col-sm-3">
+                <p class="font-weight-bold">Arrival point</p>
+            </div>
+            <div class="col-sm-2">
+                <div class="d-flex justify-content-center">
+                    <p class="font-weight-bold">Seats</p>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <p class="font-weight-bold">Cost per seat</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+        <div class="row pb-2">
+            <div class="col-sm-2">
+                <div class="d-flex justify-content-left">@Voyage.VoyageNumber</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="d-flex justify-content-left">@Voyage.DepartureBusStopName</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="d-flex justify-content-left">@Voyage.ArrivalBusStopName</div>
+            </div>
+            <div class="col-sm-2">
+                <div class="d-flex justify-content-center">@Voyage.NumberOfSeats</div>
+            </div>
+            <div class="col-sm-2">
+                <div class="d-flex justify-content-center">@Voyage.OneTicketCost BYN</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-3">
+                <div class="d-flex justify-content-left">@Voyage.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="d-flex justify-content-left">@Voyage.ArrivalDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+        <EditForm Model="TicketOrder" class="card card-body bg-light mt-5">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Last name *</label>
+                        <InputText id="email" class="form-control" @bind-Value="@TicketOrder.PassengerLastName" />
+                        <ValidationMessage For="@(() => TicketOrder.PassengerLastName)" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Name" class="control-label">First name *</label>
+                        <InputText id="email" class="form-control" @bind-Value="@TicketOrder.PassengerFirstName" />
+                        <ValidationMessage For="@(() => TicketOrder.PassengerFirstName)" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Document number *</label>
+                        <InputText id="email" class="form-control" @bind-Value="@TicketOrder.PassengerDocumentNumber" />
+                        <ValidationMessage For="@(() => TicketOrder.PassengerDocumentNumber)" />
+                    </div>
+                </div>
+            </div>
+            @if (Voyage?.SeatsInfo != null)
+            {
+                <div class="row pt-2">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="Name" class="control-label">Seat *</label>
+                            <ValidationMessage For="@(() => TicketOrder.PassengerSeatNumber)" />
+                            <InputSelect id="company" class="form-control" @bind-Value="TicketOrder.PassengerSeatNumber">
+                                <option value="Select" selected disabled="disabled">Choose seat</option>
+                                @foreach (var seatInfo in Voyage.SeatsInfo)
+                                {
+                                    if (seatInfo.IsSeatTaken)
+                                    {
+                                        <option value="@seatInfo.SeatNumber" disabled> @seatInfo.SeatNumber - taken</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@seatInfo.SeatNumber"> @seatInfo.SeatNumber</option>
+                                    }
+                                }
+                            </InputSelect>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row pt-3">
+                <div class="col">
+                    <div class="d-flex justify-content-left">
+                        <button @onclick="() => CompleteOrder(Domain.Models.TicketStatus.BoughtOut)" role="button" class="btn btn-primary mr-2">Buy</button>
+                        <button @onclick="() => CompleteOrder(Domain.Models.TicketStatus.Reserved)" role="button" class="btn btn-primary mx-2">Reserve</button>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+        @if (ShowAuthError)
+        {
+            <div class="alert alert-danger" role="alert">
+                <p>@Error</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int VoyageId { get; set; }
+    private bool loading;
+    public bool ShowAuthError { get; set; }
+    public string Error { get; set; }
+
+    public VoyageInfoRequest Voyage { get; set; } = new VoyageInfoRequest();
+
+    public TicketOrder TicketOrder { get; set; } = new TicketOrder();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Voyage = await _voyageService.GetVoyageById(VoyageId);
+        TicketOrder.VoyageId = VoyageId;
+    }
+
+    private async Task CompleteOrder(Domain.Models.TicketStatus ticketStatus)
+    {
+        ShowAuthError = false;
+        loading = true;
+
+        try
+        {
+            TicketOrder.TicketStatus = ticketStatus;
+
+            var result = await _orderService.CreateOrder(TicketOrder);
+            if (!result.IsSuccessful)
+            {
+                Error = result.ErrorMessage;
+                ShowAuthError = true;
+            }
+            else
+            {
+                NavigationManager.NavigateTo($"/order/success/{result.TicketId}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+            ShowAuthError = true;
+            loading = false;
+            await _jsConsole.LogAsync(ex.Message);
+            StateHasChanged();
+        }
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/voyages");
+    }
+}

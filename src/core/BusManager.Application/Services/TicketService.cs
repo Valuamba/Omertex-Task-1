@@ -30,6 +30,7 @@ namespace BusManager.Application.Services
             return tickets.Select(t =>
                 new TicketRepsonse()
                 {
+                    Id = t.TicketId,
                     NumberOfSeats = t.Order.Voyage.NumberOfSeats,
                     PassengerFirstName = t.PassengerFirstName,
                     PassengerLastName = t.PassengerLastName,
@@ -54,7 +55,7 @@ namespace BusManager.Application.Services
             return _mapper.Map<Domain.Models.Ticket, TicketRepsonse>(ticket);
         }
 
-        public async Task<BuyTicketRepsonse> BuyBackReservedTicket(int ticketId)
+        public async Task<BuyTicketResponse> BuyBackReservedTicket(int ticketId)
         {
             var ticket = await _ticketRepository.GetTicketByIdAsync(ticketId);
             var voyage = await _voyagesRepository.GetVoyageByIdAsync(ticket.Order.VoyageId);
@@ -80,9 +81,10 @@ namespace BusManager.Application.Services
             await _ticketRepository.UpdateTicket(ticket);
             await _orderRepository.UpdateOrder(ticket.Order);
 
-            return new BuyTicketRepsonse()
+            return new BuyTicketResponse()
             {
-                TicketId = ticketId
+                TicketId = ticketId,
+                IsSuccessful = true
             };
         }
     }

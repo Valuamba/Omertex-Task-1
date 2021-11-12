@@ -1,5 +1,7 @@
 ﻿using BusManager.Application.Contracts.Voyage;
+using BusManager.Application.Paging;
 using BusManager.Application.Services.Interfaces;
+using BusManager.Domain.Models;
 using BusManager.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -18,30 +20,15 @@ namespace BusManager.Application.Services
             _voyagesRepository = voyagesRepository;
         }
 
-        public async Task<VoyageInfoRequest[]> SearchVoyages(string from = null, string to = null, DateTime? departureTime = null, string voyageName = null)
-        {
-            var voyages = await _voyagesRepository.SearchVoyage(from, to, departureTime, voyageName);
-
-            return voyages.AsEnumerable().Select(v => new VoyageInfoRequest()
-            {
-                DepartureBusStopName = v.DepartureBusStop.Name,
-                ArrivalBusStopName = v.ArrivalBusStop.Name,
-                ArrivalDateTime = v.ArrivalDateTime,
-                DepartureDateTime = v.DepartureDateTime,
-                NumberOfSeats = v.NumberOfSeats,
-                OneTicketCost = v.OneTicketCost,
-                TravelTimeMinutes = v.TravelTimeMinutes,
-                VoyageName = v.VoyageName,
-                VoyageNumber = v.VoyageNumber
-            }).ToArray();
-        }
-
         public async Task<VoyageInfoRequest> GetVoyage(int voyageId)
         {
             var voyage = await _voyagesRepository.GetVoyageByIdAsync(voyageId);
 
+            GetInfoAboutVoyageSeats(voyage, out List<SeatInfo> SeatsInfo, out bool isPossibleToOrder);
+
             return new VoyageInfoRequest()
             {
+                VoyageId = voyage.Id,
                 ArrivalBusStopName = voyage.ArrivalBusStop.Name,
                 ArrivalDateTime = voyage.ArrivalDateTime,
                 DepartureBusStopName = voyage.DepartureBusStop.Name,
@@ -50,58 +37,63 @@ namespace BusManager.Application.Services
                 OneTicketCost = voyage.OneTicketCost,
                 TravelTimeMinutes = voyage.TravelTimeMinutes,
                 VoyageName = voyage.VoyageName,
-                VoyageNumber = voyage.VoyageNumber
+                VoyageNumber = voyage.VoyageNumber,
+                IsPossibleToOrder = isPossibleToOrder,
+                SeatsInfo = SeatsInfo
             };
         }
 
-        public async Task<VoyageInfoRequest[]> GetVoyages()
+        public async Task<PagedList<VoyageInfoRequest>> GetVoyages(VoyageParameters voyageParameters)
         {
-            var voyages = await _voyagesRepository.GetVoyages();
+            var voyages = await _voyagesRepository.GetVoyages(
+                voyageParameters.PageNumber, voyageParameters.PageSize, 
+                voyageParameters.From, voyageParameters.To,
+                voyageParameters.DepartureDate, voyageParameters.VoyageName);
 
-            List<SeatInfo> SeatsInfo = new();
-            List<VoyageInfoRequest> voyagesRequest = new(voyages.Count());
-
-            foreach (var voyage in voyages)
+            return PagedList<VoyageInfoRequest>.ToPagedList(voyages.AsEnumerable().Select(v =>
             {
-                var takedSeatNumbers = voyage.Orders.Select(x => x.Ticket.PassengerSeatNumber);
-                bool isPossibleToOrder = false;
+                GetInfoAboutVoyageSeats(v, out List<SeatInfo> SeatsInfo, out bool isPossibleToOrder);
 
-                for (int seat = 1; seat <= voyage.NumberOfSeats; seat++)
+                return new VoyageInfoRequest()
                 {
-                    var isSeatTaken = takedSeatNumbers?.Any(takedSeat => takedSeat == seat) ?? false;
-
-                    if (!isSeatTaken)
-                    {
-                        isPossibleToOrder = true;
-                    }
-
-                    SeatsInfo.Add(new SeatInfo()
-                    {
-                        SeatNumber = seat,
-                        IsSeatTaken = isSeatTaken
-                    });
-                }
-
-                isPossibleToOrder = voyage.ArrivalDateTime.CompareTo(DateTime.Now) > 0;
-
-                voyagesRequest.Add(new VoyageInfoRequest()
-                {
-                    ArrivalBusStopName = voyage.ArrivalBusStop.Name,
-                    ArrivalDateTime = voyage.ArrivalDateTime,
-                    DepartureBusStopName = voyage.DepartureBusStop.Name,
-                    DepartureDateTime = voyage.DepartureDateTime,
-                    NumberOfSeats = voyage.NumberOfSeats,
-                    OneTicketCost = voyage.OneTicketCost,
-                    TravelTimeMinutes = voyage.TravelTimeMinutes,
-                    VoyageName = voyage.VoyageName,
-                    VoyageNumber = voyage.VoyageNumber,
-                    VoyageId = voyage.Id,
+                    VoyageId = v.Id, 
+                    DepartureBusStopName = v.DepartureBusStop.Name,
+                    ArrivalBusStopName = v.ArrivalBusStop.Name,
+                    ArrivalDateTime = v.ArrivalDateTime,
+                    DepartureDateTime = v.DepartureDateTime,
+                    NumberOfSeats = v.NumberOfSeats,
+                    OneTicketCost = v.OneTicketCost,
+                    TravelTimeMinutes = v.TravelTimeMinutes,
+                    VoyageName = v.VoyageName,
+                    VoyageNumber = v.VoyageNumber,
                     SeatsInfo = SeatsInfo,
                     IsPossibleToOrder = isPossibleToOrder
+                };
+            }), voyageParameters.PageNumber, voyageParameters.PageSize);
+        }
+
+        private void GetInfoAboutVoyageSeats(VoyageInfo voyage, out List<SeatInfo> seatsInfo, out bool isPossibleToOrder)
+        {
+            seatsInfo = new();
+
+            var takedSeatNumbers = voyage.Orders.Select(x => x.Ticket.PassengerSeatNumber);
+            isPossibleToOrder = false;
+
+            for (int seat = 1; seat <= voyage.NumberOfSeats; seat++)
+            {
+                var isSeatTaken = takedSeatNumbers?.Any(takedSeat => takedSeat == seat) ?? false;
+
+                if (!isSeatTaken)
+                {
+                    isPossibleToOrder = true;
+                }
+
+                seatsInfo.Add(new SeatInfo()
+                {
+                    SeatNumber = seat,
+                    IsSeatTaken = isSeatTaken
                 });
             }
-
-            return voyagesRequest.ToArray();
         }
     }
 }

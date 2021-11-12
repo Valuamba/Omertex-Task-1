@@ -39,6 +39,7 @@ namespace BusManager.API
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<DataAccessMappingProfile>();
+                cfg.AddProfile<DataAccessMappingProfile>();
             });
 
             services.AddDbContext<MssqlBusManagerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"),
@@ -72,9 +73,10 @@ namespace BusManager.API
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidateLifetime = true,
+                    //ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
+                    //LifetimeValidator = new LifetimeValidator()
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
@@ -85,11 +87,13 @@ namespace BusManager.API
             services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MssqlBusManagerDbContext mssqlContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                SeedDataMssql.AddData(mssqlContext);
             }
 
             app.UseHttpsRedirection();

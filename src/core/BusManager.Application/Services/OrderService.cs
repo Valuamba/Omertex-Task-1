@@ -30,12 +30,17 @@ namespace BusManager.Application.Services
 
         public async Task<ProcessOrderResponse> ProcessOrder(int userId, TicketOrder ticketOrder)
         {
+            if(ticketOrder.PassengerSeatNumber == null)
+            {
+                throw new Exception("The passenger seat should be taken.");
+            }
+
             var ticket = new Domain.Models.Ticket()
             {
                 PassengerDocumentNumber = ticketOrder.PassengerDocumentNumber,
                 PassengerFirstName = ticketOrder.PassengerFirstName,
                 PassengerLastName = ticketOrder.PassengerLastName,
-                PassengerSeatNumber = ticketOrder.PassengerSeatNumber,
+                PassengerSeatNumber = ticketOrder.PassengerSeatNumber.Value,
                 Status = ticketOrder.TicketStatus,
             };
 
@@ -80,7 +85,7 @@ namespace BusManager.Application.Services
 
             var newTicket = await _ticketRepository.AddTicket(ticket);
 
-            return new() { TicketId = newTicket.TicketId };
+            return new() { TicketId = newTicket.TicketId, IsSuccessful = true };
         }
     }
 }

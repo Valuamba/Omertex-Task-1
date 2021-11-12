@@ -22,9 +22,11 @@ namespace BusManager.DataAccess.MSSQL.Repositories
             _mapper = mapper;
         }
 
-        public async Task<VoyageInfo[]> SearchVoyage(string from = null, string to = null, DateTime? departureTime = null, string voyageName = null)
+        public async Task<VoyageInfo[]> GetVoyages(int pageNumber, int pageSize, string from = null, string to = null, DateTime? departureTime = null, string voyageName = null)
         {
-            IQueryable<Entities.VoyageInfo> result = _context.Voyages.Include(v => v.DepartureBusStop).Include(v => v.ArrivalBusStop);
+            IQueryable<Entities.VoyageInfo> result = _context.Voyages
+                .Include(v => v.DepartureBusStop).Include(v => v.ArrivalBusStop)
+                .Include(v => v.Orders).ThenInclude(o => o.Ticket);
 
             if (!string.IsNullOrEmpty(from))
                 result = result.Where(x => x.DepartureBusStop.Name.ToLower().Contains(from.ToLower()));
@@ -39,6 +41,8 @@ namespace BusManager.DataAccess.MSSQL.Repositories
                 result = result.Where(x => x.VoyageName.ToLower().Contains(voyageName.ToLower()));
 
             var voyages = await result
+                       .Skip((pageNumber - 1) * pageSize)
+                       .Take(pageSize)
                        .AsNoTracking()
                        .ToArrayAsync();
 
@@ -49,6 +53,7 @@ namespace BusManager.DataAccess.MSSQL.Repositories
         public async Task<VoyageInfo[]> GetVoyages()
         {
             var voyages = await _context.Voyages.Include(v => v.DepartureBusStop).Include(v => v.ArrivalBusStop)
+                   .Include(v => v.Orders).ThenInclude(o => o.Ticket)
                    .AsNoTracking()
                    .ToArrayAsync();
 
@@ -57,7 +62,10 @@ namespace BusManager.DataAccess.MSSQL.Repositories
 
         public async Task<VoyageInfo> GetVoyageByIdAsync(int voyageId)
         {
-            var voyage = await _context.Voyages.Include(v => v.DepartureBusStop).Include(v => v.ArrivalBusStop).FirstAsync(v => v.Id == voyageId);
+            var voyage = await _context.Voyages
+                .Include(v => v.DepartureBusStop).Include(v => v.ArrivalBusStop)
+                .Include(v => v.Orders).ThenInclude(o => o.Ticket)
+                .FirstAsync(v => v.Id == voyageId);
 
             return _mapper.Map<Entities.VoyageInfo, VoyageInfo>(voyage);
         }

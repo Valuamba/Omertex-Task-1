@@ -9,7 +9,7 @@ namespace BusManager.Domain.Repositories
 {
     public interface IVoyagesRepository
     {
-        Task<VoyageInfo[]> SearchVoyage(string from = null, string to = null, DateTime? departureTime = null, string voyageName = null);
+        Task<VoyageInfo[]> GetVoyages(int pageNumber, int pageSize, string from = null, string to = null, DateTime? departureTime = null, string voyageName = null);
 
         Task<VoyageInfo[]> GetVoyages();
 

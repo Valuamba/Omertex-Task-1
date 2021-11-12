@@ -4,14 +4,16 @@ using BusManager.DataAccess.MSSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusManager.DataAccess.MSSQL.Migrations
 {
     [DbContext(typeof(MssqlBusManagerDbContext))]
-    partial class MssqlBusManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211110182551_AddEntities")]
+    partial class AddEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

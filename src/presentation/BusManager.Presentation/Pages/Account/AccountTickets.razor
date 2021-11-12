@@ -1,0 +1,223 @@
+﻿@page "/account"
+@attribute [Authorize]
+@inject ITicketService _ticketService
+@inject IUserService _userService
+@inject IOrderService _orderService
+@inject IJSConsole _jsConsole
+
+@if (User is not null)
+{
+    <div class="container mb-2" style="width: 800px;">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="d-flex justify-content-left">
+                    <p class="font-weight-bold me-2">Email:</p>
+                    <p class="me-5">@User.Email</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="d-flex justify-content-center">
+                    <a href="/logout" role="button" class="btn btn-primary  h-100 w-50">Log out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container" style="width: 800px;">
+    <h3> Tickets</h3>
+</div>
+
+@if (Tickets is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    @foreach (var ticket in Tickets)
+    {
+        <div class="container border border-primary mb-2" style="width: 800px">
+            <div class="container" style="width: 800px;">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bold">Voyage number</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 ">
+                        <p class="font-weight-bold">Departure point</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="font-weight-bold">Arrival point</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bold">Seats</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="font-weight-bold">Tickets cost</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container" style="width: 800px;">
+                <div class="row pb-2">
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-left">@ticket.VoyageNumber</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@ticket.Departure</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@ticket.Arrival</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-center">@ticket.NumberOfSeats</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-center">@ticket.OneTicketCost BYN</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@ticket.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@ticket.ArrivalDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="container" style="width: 800px;">
+                <div class="row">
+                    <div class="col-sm-2 ">
+                        <p class="font-weight-bold">Document number</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bold">Last name</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bold">First name</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bold">Seat number</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bold">Ticket status</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" style="width: 800px;">
+                <div class="row pb-2">
+                    <div class="col-sm-2">@ticket.PassengerDocumentNumber</div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-center">@ticket.PassengerLastName</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-center">@ticket.PassengerFirstName</div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="d-flex justify-content-center">@ticket.PassengerSeatNumber</div>
+                    </div>
+                    @if (@ticket.Status == Domain.Models.TicketStatus.BoughtOut)
+                    {
+                        <div class="col-sm-3">
+                            <div class="d-flex justify-content-center">Bought out</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="container col-sm-3 justify-content-center align-self-center">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-flex justify-content-center">Reserved</div>
+                                </div>
+                            </div>
+                            <div class="row pt-2">
+                                <div class="col">
+                                    <div class="d-flex justify-content-around">
+                                        <button @onclick="@(() => BuyBackTicket(ticket.Id))" role="button" class="btn btn-primary btn-sm">Buy back</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div class="container" style="width: 800px;">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+@code {
+
+    public TicketRepsonse[] Tickets { get; set; }
+
+    public UserInfo User { get; set; }
+    public bool ShowAuthError { get; set; }
+    public string Error { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //User = await _userService.GetUserInfo();
+        Tickets = await _ticketService.GetAllTickets();
+    }
+
+    private async Task BuyBackTicket(int ticketId)
+    {
+        ShowAuthError = false;
+
+        try
+        {
+            var result = await _ticketService.BuyBackTicket(ticketId);
+            if (!result.IsSuccessful)
+            {
+                Error = result.ErrorMessage;
+                ShowAuthError = true;
+            }
+            else
+            {
+                this.StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+            ShowAuthError = true;
+            await _jsConsole.LogAsync(ex.Message);
+            StateHasChanged();
+        }
+    }
+
+}

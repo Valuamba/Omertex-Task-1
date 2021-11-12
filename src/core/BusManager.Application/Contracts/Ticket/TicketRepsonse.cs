@@ -5,6 +5,8 @@ namespace BusManager.Application.Contracts.Ticket
 {
     public class TicketRepsonse
     {
+        public int Id { get; set; }
+
         public string PassengerFirstName { get; set; }
 
         public string PassengerLastName { get; set; }

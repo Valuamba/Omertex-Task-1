@@ -26,6 +26,18 @@ namespace BusManager.API.Helpers
             return userId;
         }
 
+        public static string GetUserEmail(ControllerBase controllerBase)
+        {
+            var claimsUserId = controllerBase.User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+
+            if (claimsUserId == null)
+            {
+                return null;
+            }
+
+            return claimsUserId.Value;
+        }
+
         //public static UserInfo GetUserInfo(ControllerBase controllerBase)
         //{
         //    var user = controllerBase.User;

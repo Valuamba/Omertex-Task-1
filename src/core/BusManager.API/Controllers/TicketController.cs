@@ -5,6 +5,7 @@ using System.Net;
 using BusManager.API.Helpers;
 using System.Threading.Tasks;
 using BusManager.Application.Services.Interfaces;
+using BusManager.Application.Contracts.Ticket;
 
 namespace BusManager.API.Controllers
 {
@@ -21,9 +22,9 @@ namespace BusManager.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("all")]
+        [HttpGet("user/all")]
         [ProducesResponseType(typeof(Application.Contracts.Ticket.TicketRepsonse[]), (int)HttpStatusCode.OK)]
-        public IActionResult GetTickets()
+        public IActionResult GetUserTickets()
         {
             try
             {
@@ -36,9 +37,9 @@ namespace BusManager.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+            
         [HttpGet("{ticketId:int}")]
-        [ProducesResponseType(typeof(Application.Contracts.Ticket.TicketRepsonse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(TicketRepsonse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetTicket(int ticketId)
         {
             try
@@ -54,7 +55,7 @@ namespace BusManager.API.Controllers
         }
 
         [HttpGet("buy/{ticketId:int}")]
-        [ProducesResponseType(typeof(Application.Contracts.Ticket.TicketRepsonse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BuyTicketResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> BuyBackTicket(int ticketId)
         {
             try
@@ -65,7 +66,7 @@ namespace BusManager.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new BuyTicketResponse() { TicketId= ticketId, ErrorMessage = ex.Message} );
             }
         }
     }

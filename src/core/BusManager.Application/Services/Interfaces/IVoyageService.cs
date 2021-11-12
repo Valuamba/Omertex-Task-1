@@ -1,4 +1,5 @@
 ﻿using BusManager.Application.Contracts.Voyage;
+using BusManager.Application.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,8 @@ namespace BusManager.Application.Services.Interfaces
 {
     public interface IVoyageService
     {
-        Task<VoyageInfoRequest[]> SearchVoyages(string from = null, string to = null, DateTime? departureTime = null, string voyageName = null);
-
         Task<VoyageInfoRequest> GetVoyage(int voyageId);
 
-        Task<VoyageInfoRequest[]> GetVoyages();
+        Task<PagedList<VoyageInfoRequest>> GetVoyages(VoyageParameters voyageParameters);
     }
 }

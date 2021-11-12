@@ -1,6 +1,6 @@
-﻿namespace BusManager.Application.Contracts.Order
+﻿namespace BusManager.Application.Contracts.Ticket
 {
-    public class ProcessOrderResponse
+    public class BuyTicketResponse
     {
         public int TicketId { get; set; }
         public bool IsSuccessful { get; set; }
