@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>  
+<html lang="en">  
+  
+<head>  
+    <meta charset="utf-8">  
+    <title>Bootstrap Part1</title>  
+    <meta name="viewport" content="width=device-width,initial-scale=1">  
+
+    <link rel="stylesheet" href="../wwwroot/css/bootstrap/bootstrap.min.css"> 
+    <script src="../../wwwroot/js/bootstrap.bundle.min.js"></script>
+    <script src="../../wwwroot/js/bootstrap-select.min.js"></script>
+  
+<body>  
+
+    
+  <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-2">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="#">Bus manager for OMERTEX</a>
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Voyages <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <button class="btn btn-primary my-2 my-sm-0" type="submit">Account</button>
+
+      <form class="form-inline my-2 my-lg-0">
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">Account</button>
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">Sign Up</button>
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">Log In</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="container" style="width: 900px;">
+    <nav class="navbar navbar-expand-sm navbar navbar-light bg-light">
+     
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Account info <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Tickets <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+        
+      </div>
+    </nav>
+  </div>
+
+  <div class="container" style="width: 800px;">
+    <h3> Account Info</h1>
+  </div>
+
+  <div class="container mb-2" style="width: 800px;">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="d-flex justify-content-left">
+          <p class="fw-bold me-2">Email:</p>
+          <p class="me-5">mmm.marchuk@mail.ru</p>
+      </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="d-flex justify-content-center">
+        <a href="#" role="button" class="btn btn-primary  h-100 w-50">Log out</a>
+        </div>
+    </div>  
+    </div>
+</div>
+<div class="container" style="width: 800px;">
+  <h3> Tickets</h1>
+</div>
+
+<div class="container border border-primary mb-2" style="width: 800px;">
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="d-flex justify-content-center">
+            <p class="fw-bold">Номер маршрута</p>
+        </div>
+      </div>
+      <div class="col-sm-3 ">
+        <p class="fw-bold">Место отправления</p>
+      </div>
+      <div class="col-sm-3">
+        <p class="fw-bold">Место прибытия</p>  
+      </div>
+      <div class="col-sm-2">
+        <div class="d-flex justify-content-center">
+            <p class="fw-bold">Мест</p>
+        </div>
+        </div>
+      <div class="col-sm-2">
+        <p class="fw-bold">Стоимость</p>  
+        </div>
+    </div>
+</div>
+
+<div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+    <div class="row pb-2">
+      <div class="col-sm-2">
+        <div class="d-flex justify-content-left">A986</div>
+    </div>
+      <div class="col-sm-3">
+        <div class="d-flex justify-content-left">Брест-Центральный</div>
+    </div>
+      <div class="col-sm-3">
+        <div class="d-flex justify-content-left">Минск</div>
+    </div>
+      <div class="col-sm-2">
+            <div class="d-flex justify-content-center">25</div>  
+        </div>
+      <div class="col-sm-2">
+        <div class="d-flex justify-content-center">25 BYN</div>    
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-left">14.11.2021 14:45</div>    
+        </div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-left">14.11.2021 14:45</div> 
+        </div>
+        <div class="col-sm-4">
+            <div class="d-flex justify-content-center">
+            <a href="#" role="button" class="btn btn-primary  h-100 w-75">Оформить</a>
+            </div>
+        </div>  
+    </div>
+
+</div>
+
+    <div class="container border border-primary pt-2 mb-2" style="width: 800px;">
+    <div class="row">
+        <div class="col-sm-2 ">
+            <p class="fw-bold">Номер документа</p>
+        </div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-center">
+                <p class="fw-bold">Фамилия</p>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-center">
+                <p class="fw-bold">Имя</p>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="d-flex justify-content-center">
+                <p class="fw-bold">Место</p>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-center">
+                <p class="fw-bold">Статус билета</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+    <div class="row pb-2">
+        <div class="col-sm-2">AB2948821</div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-center">Понасенков</div>
+        </div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-center">Евгений</div>
+        </div>
+        <div class="col-sm-1">
+            <div class="d-flex justify-content-center">13</div>
+        </div>
+        <div class="col-sm-3">
+            <div class="d-flex justify-content-center">Приобретен</div>
+        </div>
+      </div>
+</div>
+
+<div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+    <div class="row pb-2 ">
+        <div class="col-sm-2 justify-content-center align-self-center">AB2948821</div>
+        <div class="col-sm-3 align-self-center">
+            <div class="d-flex justify-content-center">Понасенков</div>
+        </div>
+        <div class="col-sm-3 justify-content-center align-self-center">
+            <div class="d-flex justify-content-center">Евгений</div>
+        </div>
+        <div class="col-sm-1 justify-content-center align-self-center">
+            <div class="d-flex justify-content-center">13</div>
+        </div>
+        <div class="container col-sm-3 justify-content-center align-self-center">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-center">Забронирован</div>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col">
+                    <div class="d-flex justify-content-around">
+                        <a href="#" role="button" class="btn btn-primary btn-sm">Выкупить</a>
+                        <a href="#" role="button" class="btn btn-primary btn-sm">Отменить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      </div>
+</div>
+<div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+  <div class="row pb-2 ">
+      <div class="col-sm-2 justify-content-center align-self-center">AB2948821</div>
+      <div class="col-sm-3 align-self-center">
+          <div class="d-flex justify-content-center">Понасенков</div>
+      </div>
+      <div class="col-sm-3 justify-content-center align-self-center">
+          <div class="d-flex justify-content-center">Евгений</div>
+      </div>
+      <div class="col-sm-1 justify-content-center align-self-center">
+          <div class="d-flex justify-content-center">13</div>
+      </div>
+      <div class="container col-sm-3 justify-content-center align-self-center">
+          <div class="row">
+              <div class="col">
+                  <div class="d-flex justify-content-center">Забронирован</div>
+              </div>
+          </div>
+          <div class="row pt-2">
+              <div class="col">
+                  <div class="d-flex justify-content-around">
+                      <a href="#" role="button" class="btn btn-primary btn-sm">Выкупить</a>
+                      <a href="#" role="button" class="btn btn-primary btn-sm">Отменить</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+    </div>
+</div>
+<div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+  <div class="row pb-2 ">
+      <div class="col-sm-2 justify-content-center align-self-center">AB2948821</div>
+      <div class="col-sm-3 align-self-center">
+          <div class="d-flex justify-content-center">Понасенков</div>
+      </div>
+      <div class="col-sm-3 justify-content-center align-self-center">
+          <div class="d-flex justify-content-center">Евгений</div>
+      </div>
+      <div class="col-sm-1 justify-content-center align-self-center">
+          <div class="d-flex justify-content-center">13</div>
+      </div>
+      <div class="container col-sm-3 justify-content-center align-self-center">
+          <div class="row">
+              <div class="col">
+                  <div class="d-flex justify-content-center">Забронирован</div>
+              </div>
+          </div>
+          <div class="row pt-2">
+              <div class="col">
+                  <div class="d-flex justify-content-around">
+                      <a href="#" role="button" class="btn btn-primary btn-sm">Выкупить</a>
+                      <a href="#" role="button" class="btn btn-primary btn-sm">Отменить</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+    </div>
+</div>
+
+<div class="container" style="width: 800px;">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+</body>  
+  
+</html>  

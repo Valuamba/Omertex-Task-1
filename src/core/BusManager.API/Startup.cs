@@ -73,17 +73,15 @@ namespace BusManager.API
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    //ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    //LifetimeValidator = new LifetimeValidator()
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
 
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddRazorPages();
         }
 

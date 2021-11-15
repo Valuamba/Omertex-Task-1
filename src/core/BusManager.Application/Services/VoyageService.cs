@@ -66,7 +66,6 @@ namespace BusManager.Application.Services
                     TravelTimeMinutes = v.TravelTimeMinutes,
                     VoyageName = v.VoyageName,
                     VoyageNumber = v.VoyageNumber,
-                    SeatsInfo = SeatsInfo,
                     IsPossibleToOrder = isPossibleToOrder
                 };
             }), voyageParameters.PageNumber, voyageParameters.PageSize);
@@ -75,9 +74,8 @@ namespace BusManager.Application.Services
         private void GetInfoAboutVoyageSeats(VoyageInfo voyage, out List<SeatInfo> seatsInfo, out bool isPossibleToOrder)
         {
             seatsInfo = new();
-
             var takedSeatNumbers = voyage.Orders.Select(x => x.Ticket.PassengerSeatNumber);
-            isPossibleToOrder = false;
+            isPossibleToOrder = voyage.ArrivalDateTime.CompareTo(DateTime.Now) > 0;
 
             for (int seat = 1; seat <= voyage.NumberOfSeats; seat++)
             {
