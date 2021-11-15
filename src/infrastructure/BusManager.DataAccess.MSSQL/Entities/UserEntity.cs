@@ -20,5 +20,7 @@ namespace BusManager.DataAccess.MSSQL.Entities
         public string Password { get; set; }
 
         public DateTime BirthDate { get; set; }
+        public ICollection<Order> Orders { get; set; }
+
     }
 }

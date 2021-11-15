@@ -1,0 +1,111 @@
+﻿@page "/"
+@page "/voyages"
+@attribute [Authorize]
+
+<div class="container mb-2" style="width: 800px;">
+    <h1>Voyages</h1>
+    @if (AllVoyages is null)
+    {
+        <p><em>Loading... !</em></p>
+    }
+    else
+    {
+        <EditForm Model="@_voyageParameters">
+            <div class="container mb-2" style="width: 800px;">
+                <div class="row mb-2">
+                    <div class="col-sm-3 justify-content-center">
+                        <input type="text" class="form-control" @bind-value="_voyageParameters.From" placeholder="Departure point" />
+                    </div>
+                    <div class="col-sm-3 justify-content-center">
+                        <input type="text" class="form-control" @bind-value="_voyageParameters.To" placeholder="Arrival point" />
+                    </div>
+                    <div class="col-sm-3 justify-content-center">
+                        <InputDate class="form-control" @bind-Value="_voyageParameters.DepartureDate" />
+                    </div>
+                    <div class="col-sm-3 justify-content-center">
+                        <input type="text" class="form-control" @bind-value="_voyageParameters.VoyageName" placeholder="Voyage name" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col justify-content-center">
+                        <input type="submit" class="btn btn-primary" value="Search" @onclick="SearchVoyage" />
+                        <input type="button" class="btn btn-primary" value="Clear" @onclick="Clear" />
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="container border border-primary mb-2" style="width: 800px;">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="d-flex justify-content-center">
+                        <p class="font-weight-bold">Voyage number</p>
+                    </div>
+                </div>
+                <div class="col-sm-3 ">
+                    <p class="font-weight-bold">Departure point</p>
+                </div>
+                <div class="col-sm-3">
+                    <p class="font-weight-bold">Arrival point</p>
+                </div>
+                <div class="col-sm-2">
+                    <div class="d-flex justify-content-center">
+                        <p class="font-weight-bold">Seat</p>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <p class="font-weight-bold">Cost per seat</p>
+                </div>
+            </div>
+        </div>
+
+
+        @foreach (var voyage in AllVoyages)
+        {
+            <div class="container border border-primary pt-2 mb-2 pb-2" style="width: 800px;">
+                <div class="row pb-2">
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-left">@voyage.VoyageNumber</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@voyage.DepartureBusStopName</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@voyage.ArrivalBusStopName</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-center">@voyage.NumberOfSeats</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="d-flex justify-content-center">@voyage.OneTicketCost BYN</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@voyage.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="d-flex justify-content-left">@voyage.ArrivalDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex justify-content-center">
+                            @if (voyage.IsPossibleToOrder)
+                            {
+                                <a href="/order/@voyage.VoyageId" role="button" class="btn btn-primary  h-100 w-75">Оформить</a>
+                            }
+                            else
+                            {
+                                <a href="/order/@voyage.VoyageId" role="button" class="btn btn-primary disabled  h-100 w-75">Оформить</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="container" style="width: 800px;">
+            <Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage" />
+        </div>
+    }
+</div>

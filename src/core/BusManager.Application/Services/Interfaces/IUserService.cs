@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusManager.Application.Services
+namespace BusManager.Application.Services.Interfaces
 {
     public interface IUserService
     {

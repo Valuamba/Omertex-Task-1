@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BusManager.Application.Services.Interfaces;
 
 namespace BusManager.Application.Services
 {
@@ -62,6 +63,7 @@ namespace BusManager.Application.Services
 
         private SigningCredentials GetSigningCredentials()
         {
+            var v = _jwtSettings.GetSection("securityKey").Value;
             var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value);
             var secret = new SymmetricSecurityKey(key);
 
@@ -72,6 +74,7 @@ namespace BusManager.Application.Services
         {
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email)
             };
 

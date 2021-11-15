@@ -12,6 +12,7 @@ using BusManager.Domain.Repositories;
 using BusManager.DataAccess.MSSQL.Repositories;
 using BusManager.Domain.Services;
 using BusManager.Application.Services;
+using BusManager.Application.Services.Interfaces;
 
 namespace BusManager.API
 {
@@ -38,13 +39,26 @@ namespace BusManager.API
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<DataAccessMappingProfile>();
+                cfg.AddProfile<DataAccessMappingProfile>();
             });
 
             services.AddDbContext<MssqlBusManagerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"),
                       x => x.MigrationsAssembly(typeof(MssqlBusManagerDbContext).Assembly.FullName)));
 
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHasher, Hasher>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IUserRepository, DataAccess.MSSQL.Repositories.UserRepository>();
+            services.AddScoped<IVoyagesRepository, DataAccess.MSSQL.Repositories.VoyagesRepository>();
+            services.AddScoped<IBusStopRepository, DataAccess.MSSQL.Repositories.BusStopRepository>();
+            services.AddScoped<ITicketRepository, DataAccess.MSSQL.Repositories.TicketRepository>();
+            services.AddScoped<IOrderRepository, DataAccess.MSSQL.Repositories.OrderRepository>();
+            services.AddScoped<IVoyagesRepository, DataAccess.MSSQL.Repositories.VoyagesRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IVoyageService, VoyageService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IUserService, UserService>();
 
             var jwtSettings = Configuration.GetSection("JwtSettings");
@@ -59,7 +73,6 @@ namespace BusManager.API
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
@@ -68,15 +81,17 @@ namespace BusManager.API
                 };
             });
 
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MssqlBusManagerDbContext mssqlContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                SeedDataMssql.AddData(mssqlContext);
             }
 
             app.UseHttpsRedirection();

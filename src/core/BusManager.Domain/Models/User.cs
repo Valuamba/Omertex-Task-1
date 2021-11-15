@@ -19,5 +19,8 @@ namespace BusManager.Domain.Models
         public string Password { get; set; }
 
         public DateTime BirthDate { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
+
     }
 }

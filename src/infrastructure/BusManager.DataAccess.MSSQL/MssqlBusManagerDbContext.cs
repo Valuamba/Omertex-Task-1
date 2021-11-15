@@ -1,4 +1,5 @@
 ﻿using BusManager.DataAccess.MSSQL.Entities;
+using BusManager.DataAccess.MSSQL.EntityConfigurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,19 @@ namespace BusManager.DataAccess.MSSQL
         {
         }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<VoyageInfo> Voyages { get; set; }
+        public DbSet<BusStop> BusStops { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new BusStopEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TicketEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new VoyageInfoEntityConfiguration());
+        }
     }
 }
