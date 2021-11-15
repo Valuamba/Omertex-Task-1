@@ -19,12 +19,28 @@
 Задачи на подумать:
 - [ ] Добавить Idenity Server.
 - [ ] Добавить EMail верификацию.
+- [ ] Добавить интеграционные тесты.
+- [ ] Заменить Blazor или добавить Angular.js
 
 AppHarbor:
 .NET Core приложение постоянно завершалось без вывода ошибки в лог.
 
 AZURE:
 Закончилась версия триал аккаунта, новый не позволяет создать.
+
+Особенности проекта:
+При разработке придерживался архитектуры Onion, проект разбит на src, tests.
+
+    -> Src -> core -> WebApi - Контроллеры
+                   -> Application - Сервисы, контракты, extensions, utilities
+                   -> Domain - Модели, интерфейсы
+            
+            -> infrastrucutre -> EF.MSSQL
+                              -> EF.PostgreSql
+                      
+            -> presentation   -> Blazor Client
+    
+    -> Tests -> UnitTests
 
 
 Демонстрация работы программы:
